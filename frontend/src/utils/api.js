@@ -9,7 +9,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = "https://nexustech-backend-b7dt.onrender.com";
 
 const api = axios.create({ baseURL: BASE_URL });
 

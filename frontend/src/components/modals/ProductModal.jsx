@@ -20,7 +20,9 @@ export default function ProductModal({
 
   const fetchReviews = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/reviews/${product.product_id}`);
+      const { data } = await axios.get(
+        `https://nexustech-backend-b7dt.onrender.com/api/reviews/${product.product_id}`,
+      );
       setReviews(data);
     } catch (err) { console.error(err); }
   };
@@ -31,18 +33,26 @@ export default function ProductModal({
     try {
       const user  = JSON.parse(localStorage.getItem('user'));
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/api/reviews',
-        { product_id: product.product_id, rating: newReview.rating, comment: newReview.comment },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await axios.post(
+        "https://nexustech-backend-b7dt.onrender.com/api/reviews",
+        {
+          product_id: product.product_id,
+          rating: newReview.rating,
+          comment: newReview.comment,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setReviews(prev => [{ ...newReview, username: user.username }, ...prev]);
       setNewReview({ rating: 5, comment: '' });
       // Bust local + server sentiment cache
       bustSentimentCache(product.product_id);
-      axios.post('http://localhost:3000/api/reviews/sentiment-refresh',
-        { product_id: product.product_id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      ).catch(() => {});
+      axios
+        .post(
+          "https://nexustech-backend-b7dt.onrender.com/api/reviews/sentiment-refresh",
+          { product_id: product.product_id },
+          { headers: { Authorization: `Bearer ${token}` } },
+        )
+        .catch(() => {});
     } catch (err) {
       alert('Failed to post review. Make sure you are logged in.');
       console.error(err);

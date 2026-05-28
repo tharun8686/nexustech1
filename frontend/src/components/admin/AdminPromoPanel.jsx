@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Tag, Plus, Trash2, ToggleLeft, ToggleRight, RefreshCw, X, Percent, IndianRupee, CheckCircle2, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const API = 'http://localhost:3000/api/admin';
+const API = "https://nexustech-backend-b7dt.onrender.com/api/admin";
 
 function badge(promo) {
   const now = new Date();

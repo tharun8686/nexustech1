@@ -86,9 +86,13 @@ export default function ProfileModal({ user, onClose, onUpdate, defaultTab = 'in
       const token = localStorage.getItem('token');
       const dial  = getDialInfo(form.country);
       const payload = { ...form, phone: form.phone ? `${dial.code}${form.phone}` : '' };
-      const { data } = await axios.put('http://localhost:3000/api/profile', payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const { data } = await axios.put(
+        "https://nexustech-backend-b7dt.onrender.com/api/profile",
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       // Update localStorage and parent state
       const updated = { ...user, ...form, phone: payload.phone };
       localStorage.setItem('user', JSON.stringify(updated));
@@ -111,9 +115,13 @@ export default function ProfileModal({ user, onClose, onUpdate, defaultTab = 'in
     setSaving(true); setFeedback(null);
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:3000/api/profile/password',
-        { currentPassword: pwForm.currentPassword, newPassword: pwForm.newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await axios.put(
+        "https://nexustech-backend-b7dt.onrender.com/api/profile/password",
+        {
+          currentPassword: pwForm.currentPassword,
+          newPassword: pwForm.newPassword,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setFeedback({ type: 'success', msg: 'Password changed successfully!' });
       setPwForm({ currentPassword: '', newPassword: '', confirmPassword: '' });

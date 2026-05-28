@@ -11,9 +11,11 @@ import {
 //         replaced with plain axios + env-based URL to match AdminChatPanel
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://nexustech-backend-b7dt.onrender.com";
 // FIX 2: was hardcoded 'ws://localhost:3000' — now env-aware
-const WS_URL  = import.meta.env.VITE_WS_URL  || 'ws://localhost:3000';
+const WS_URL =
+  import.meta.env.VITE_WS_URL || "wss://nexustech-backend-b7dt.onrender.com";
 
 function formatTime(dateStr) {
   if (!dateStr) return '';

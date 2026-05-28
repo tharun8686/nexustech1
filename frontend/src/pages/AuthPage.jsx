@@ -109,7 +109,10 @@ export default function AuthPage({ setUser }) {
       const payload = isLogin
         ? formData
         : { ...formData, dialCode: getDialInfo(formData.country).code };
-      const { data } = await axios.post(`http://localhost:3000${endpoint}`, payload);
+      const { data } = await axios.post(
+        `https://nexustech-backend-b7dt.onrender.com${endpoint}`,
+        payload,
+      );
 
       if (isLogin) {
         localStorage.setItem('user', JSON.stringify(data.user));

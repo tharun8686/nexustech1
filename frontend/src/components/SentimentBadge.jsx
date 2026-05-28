@@ -64,7 +64,10 @@ export default function SentimentBadge({
     }
 
     let alive = true;
-    axios.get(`http://localhost:3000/api/sentiment/${productId}`)
+    axios
+      .get(
+        `https://nexustech-backend-b7dt.onrender.com/api/sentiment/${productId}`,
+      )
       .then(({ data: d }) => {
         if (!alive) return;
         cache[productId] = d;
@@ -72,10 +75,17 @@ export default function SentimentBadge({
       })
       .catch(() => {
         if (!alive) return;
-        const fb = { label: 'No Reviews', score: 0, positive_pct: 0, summary: '' };
+        const fb = {
+          label: "No Reviews",
+          score: 0,
+          positive_pct: 0,
+          summary: "",
+        };
         setData(fb);
       })
-      .finally(() => { if (alive) setLoading(false); });
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
 
     return () => { alive = false; };
   }, [productId, reviewCount]);
@@ -138,8 +148,8 @@ export async function preloadSentiment(productIds) {
   if (!missing.length) return;
   try {
     const { data } = await axios.post(
-      'http://localhost:3000/api/sentiment/batch',
-      { productIds: missing }
+      "https://nexustech-backend-b7dt.onrender.com/api/sentiment/batch",
+      { productIds: missing },
     );
     Object.entries(data).forEach(([id, s]) => { cache[Number(id)] = s; });
   } catch (_) {}

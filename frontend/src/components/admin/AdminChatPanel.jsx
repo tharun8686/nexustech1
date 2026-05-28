@@ -3,8 +3,10 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { MessageCircle, Send, RefreshCw, Bot, ChevronLeft, Search } from 'lucide-react';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-const WS_URL  = import.meta.env.VITE_WS_URL  || 'ws://localhost:3000';
+const API_URL =
+  import.meta.env.VITE_API_URL || "https://nexustech-backend-b7dt.onrender.com";
+const WS_URL =
+  import.meta.env.VITE_WS_URL || "wss://nexustech-backend-b7dt.onrender.com";
 
 function formatTime(dateStr) {
   if (!dateStr) return '';

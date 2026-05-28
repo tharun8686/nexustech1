@@ -10,8 +10,8 @@ import {
 import { formatPrice } from '../../utils/currency';
 import toast from 'react-hot-toast';
 
-const WS_URL  = 'ws://localhost:3000';
-const API_URL = 'http://localhost:3000';
+const WS_URL = "wss://nexustech-backend-b7dt.onrender.com";
+const API_URL = "https://nexustech-backend-b7dt.onrender.com";
 
 // ── Status config ─────────────────────────────────────────────────────────────
 const STATUS_CONFIG = {
