@@ -41,44 +41,50 @@ const IMAGE_BASE_DIR = path.join(
 );
 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "root",
-  database: process.env.DB_NAME || "electronics_store",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 });
 
-/*
 db.connect((err) => {
   if (err) {
     console.error("❌ DB connection failed:", err.message);
-    return;
-  }
-  console.log("✅ Connected to MySQL");
+  } else {
+    console.log("✅ Connected to MySQL");
 
-  // Auto-migration
-  db.query(
-    `SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS
-     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'reviews' AND COLUMN_NAME = 'user_id'`,
-    (err2, rows) => {
-      if (err2) return;
-      if (rows[0].cnt === 0) {
-        db.query(
-          `ALTER TABLE reviews ADD COLUMN user_id INT NOT NULL DEFAULT 0 AFTER product_id`,
-          (err3) => {
-            if (err3)
-              console.error(
-                "❌ Migration failed (reviews.user_id):",
-                err3.message,
-              );
-            else
-              console.log("✅ Migration applied: reviews.user_id column added");
-          },
-        );
-      }
-    },
-  );
+    // Auto-migration
+    db.query(
+      `SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE() 
+       AND TABLE_NAME = 'reviews' 
+       AND COLUMN_NAME = 'user_id'`,
+      (err2, rows) => {
+        if (err2) return;
+
+        if (rows[0].cnt === 0) {
+          db.query(
+            `ALTER TABLE reviews 
+             ADD COLUMN user_id INT NOT NULL DEFAULT 0 AFTER product_id`,
+            (err3) => {
+              if (err3) {
+                console.error(
+                  "❌ Migration failed (reviews.user_id):",
+                  err3.message,
+                );
+              } else {
+                console.log(
+                  "✅ Migration applied: reviews.user_id column added",
+                );
+              }
+            },
+          );
+        }
+      },
+    );
+  }
 });
-*/
 
 const promiseDb = db.promise();
 
