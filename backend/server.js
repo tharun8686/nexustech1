@@ -126,7 +126,11 @@ wss.on("connection", (ws) => {
         if (!text) return;
 
         // Persist to DB
-        const senderId = client.isAdmin ? null : client.userId;
+        // For admin WS messages, targetUserId identifies whose thread this belongs to.
+        // Storing null previously made admin WS messages invisible to all chat history queries.
+        const senderId = client.isAdmin
+          ? Number(msg.targetUserId) || null
+          : client.userId;
         const senderName =
           client.username || (client.isAdmin ? "Admin" : "User");
         const isAdmin = client.isAdmin ? 1 : 0;
@@ -584,11 +588,9 @@ app.post("/api/orders/:id/cancel", authenticateToken, async (req, res) => {
     if (type === "cancel") {
       const cancellableStatuses = ["Pending", "Confirmed", "Processing"];
       if (!cancellableStatuses.includes(order.status)) {
-        return res
-          .status(400)
-          .json({
-            error: `Cannot cancel an order that is already "${order.status}". Please use Return instead.`,
-          });
+        return res.status(400).json({
+          error: `Cannot cancel an order that is already "${order.status}". Please use Return instead.`,
+        });
       }
       const [items] = await promiseDb.query(
         "SELECT product_id, quantity FROM order_items WHERE order_id = ?",
@@ -682,11 +684,9 @@ app.post("/api/orders/:id/cancel", authenticateToken, async (req, res) => {
         status: "Processing",
       });
     } else {
-      return res
-        .status(400)
-        .json({
-          error: 'Invalid type. Use "cancel", "return", or "exchange".',
-        });
+      return res.status(400).json({
+        error: 'Invalid type. Use "cancel", "return", or "exchange".',
+      });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -1011,11 +1011,9 @@ app.post("/api/promo/validate", authenticateToken, async (req, res) => {
         .status(400)
         .json({ error: "You have already used this promo code." });
     if (orderTotal < promo.min_order_value)
-      return res
-        .status(400)
-        .json({
-          error: `Minimum order of ₹${Number(promo.min_order_value).toLocaleString()} required.`,
-        });
+      return res.status(400).json({
+        error: `Minimum order of ₹${Number(promo.min_order_value).toLocaleString()} required.`,
+      });
     let discount =
       promo.discount_type === "percentage"
         ? Math.min(
